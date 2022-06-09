@@ -1,6 +1,7 @@
+using CRUD_CLIENTE_MONGO.Context;
+using CRUD_CLIENTE_MONGO.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CRUD_CLIENTE
+namespace CRUD_CLIENTE_MONGO
 {
     public class Startup
     {
@@ -26,25 +27,22 @@ namespace CRUD_CLIENTE
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IClienteContext, ClienteContext>();
+            services.AddScoped<IClienteRepository, ClienteRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CRUD_CLIENTE", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CRUD_CLIENTE_MONGO", Version = "v1" });
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CRUD_CLIENTE v1"));
-            }
-
-            app.UseHttpsRedirection();
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CRUD_CLIENTE_MONGO v1"));
 
             app.UseRouting();
 

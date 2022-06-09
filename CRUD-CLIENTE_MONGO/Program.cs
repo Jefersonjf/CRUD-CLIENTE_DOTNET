@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CRUD_CLIENTE
+namespace CRUD_CLIENTE_MONGO
 {
     public class Program
     {
