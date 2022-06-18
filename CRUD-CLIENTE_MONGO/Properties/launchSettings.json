@@ -14,7 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "CRUD_CLIENTE_MONGO": {
@@ -23,10 +23,13 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5000",
+
+      // VARIAVEIS DE AMBIENTE
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MongoConnectionString": "mongodb://127.0.0.1:27017"
       }
+
     }
   }
 }

@@ -4,8 +4,11 @@ using System;
 
 namespace CRUD_CLIENTE_MONGO.Context
 {
+    //IMPLEMENTAÇÃO DA INTERFACE DE CONTEXTO DE CLIENTE
     public class ClienteContext : IClienteContext
     {
+        public IMongoCollection<Cliente> Cliente { get; }
+
         public ClienteContext()
         {
             var connectionString = Environment.GetEnvironmentVariable("MongoConnectionString");
@@ -15,8 +18,6 @@ namespace CRUD_CLIENTE_MONGO.Context
 
             Cliente = database.GetCollection<Cliente>("cliente");
         }
-
-        public IMongoCollection<Cliente> Cliente { get; }
-         
+        
     }
 }

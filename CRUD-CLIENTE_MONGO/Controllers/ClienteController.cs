@@ -7,57 +7,80 @@ using System.Threading.Tasks;
 
 namespace CRUD_CLIENTE_MONGO.Controllers
 {
+    // RECEBE REQUISIÇOES E ENTREGA RESPOSTAS (ENDPOINTS)
+
     [Route("api/v1/[controller]")]
     [ApiController]
     public class ClienteController : ControllerBase
     {
         private readonly IClienteRepository _repository;
 
+        // INJEÇÃO DE DEPENDENCIA DO REPOSITORIO DE CLIENTE
         public ClienteController(IClienteRepository repository)
         {
             _repository = repository;
         }
 
+        // RETORNA TODOS OS CLIENTES (Falta paginação)
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
         {
-            var clientes = await _repository.GetClientes();
-            return Ok(clientes);
+            try
+            {
+                var clientes = await _repository.GetClientes();
+                return Ok(clientes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
+        // RETORNAR UM CLIENTE POR CPF
         [HttpGet("{cpf}")]
         public async Task<ActionResult<Cliente>> GetClientePorCpf(String cpf)
         {
-            var cliente = await _repository.GetClientePorCPF(cpf);
-
-            if (cliente == null)
+            try
             {
-                return null;
-            }
+                var cliente = await _repository.GetClientePorCPF(cpf);
 
-            return Ok(cliente);
+                if (cliente == null)
+                    throw new Exception("Cliente não encontrado para o cpf informado");
+
+                return Ok(cliente);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpGet("nome/{nome}")]
+        // RETORNAR O CLIENTE POR NOME
+        [HttpGet("Nome/{nome}")]
         public async Task<ActionResult<Cliente>> GetClientePorNome(String nome)
         {
-            var cliente = await _repository.GetClientePorNome(nome);
-
-            if (cliente == null)
+            try
             {
-                return null;
-            }
+                var cliente = await _repository.GetClientePorNome(nome);
 
-            return Ok(cliente);
+                if (cliente == null)
+                    throw new Exception("Cliente não encontrado para o nome informado");
+
+                return Ok(cliente);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-
+        // CRIAR CLIENTE
         [HttpPost]
         public async Task<ActionResult<Cliente>> CriarCliente([FromBody] Cliente cliente)
         {
             try
             {
-                if (cliente is null)
+                if (cliente == null)
                     throw new Exception("Cliente inválido");
 
                 cliente.Validar();
@@ -67,30 +90,47 @@ namespace CRUD_CLIENTE_MONGO.Controllers
 
                 return Ok(cadastroDb);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+        // ATUALIZAR CLIENTE
         [HttpPut]
         public async Task<IActionResult> UpdateCliente([FromBody] Cliente cliente)
         {
-            if (cliente is null)
-                return BadRequest("Cliente inválido");
+            try
+            {
+                if (cliente is null)
+                    return BadRequest("Cliente inválido");
 
-            cliente.Validar();
+                cliente.Validar();
 
-            var result = await _repository.AtualiarCliente(cliente);
+                var result = await _repository.AtualiarCliente(cliente);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
+        // DELETAR O CLIENTE POR CPF
         [HttpDelete("{cpf}")]
         public async Task<IActionResult> DeletarClientePorCpf(string cpf)
         {
-            var result = await _repository.DeletarCliente(cpf);
-            return Ok(result);
+            try
+            {
+                var result = await _repository.DeletarCliente(cpf);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

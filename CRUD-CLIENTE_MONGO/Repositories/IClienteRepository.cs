@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace CRUD_CLIENTE_MONGO.Repositories
 {
+    //INTERFACE DE REPOSITORIO DE CLIENTE 
     public interface IClienteRepository
     {
         Task<IEnumerable<Cliente>> GetClientes();
